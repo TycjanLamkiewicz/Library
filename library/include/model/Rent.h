@@ -43,7 +43,7 @@ public:
 
     /************ other ************/
 
-    std::string getRentInfo();
+    std::string getInfo();
 
     int getRentDays();
 

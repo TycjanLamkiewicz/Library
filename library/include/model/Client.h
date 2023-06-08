@@ -15,9 +15,9 @@ private:
     std::string lastName;
     bool isArchive;
     ClientTypePtr clientType;
-    std::vector<RentPtr> currentRents;
+    int bookCount = 0;
 public:
-    Client(int clientId, const std::string &firstName, const std::string &lastName);
+    Client(int clientId, const std::string &firstName, const std::string &lastName, const ClientTypePtr &clientType);
 
     virtual ~Client();
 
@@ -33,7 +33,7 @@ public:
 
     const ClientTypePtr &getClientType() const;
 
-    const std::vector<RentPtr> &getCurrentRents() const;
+    int getBookCount() const;
 
     /*********** setters ***********/
 
@@ -45,15 +45,11 @@ public:
 
     void setClientType(const ClientTypePtr &clientType);
 
+    void setBookCount(int bookCount);
+
     /************ other ************/
 
-    std::string getClientInfo();
-
-    std::string getFullClienxtInfo();
-
-    void addRent(RentPtr rent);
-
-    void removeRent(RentPtr rent);
+    std::string getInfo();
 };
 
 

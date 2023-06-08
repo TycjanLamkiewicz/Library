@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 project(Library)
 
 set(SOURCE_FILES
-        include/typedefs.h include/model/Book.h src/model/Book.cpp include/model/Author.h src/model/Author.cpp src/model/Rent.cpp include/model/Rent.h src/model/Client.cpp include/model/Client.h src/model/ClientType.cpp include/model/ClientType.h src/model/Student.cpp include/model/Student.h src/model/NonStudent.cpp include/model/NonStudent.h)
+        include/typedefs.h include/model/Book.h src/model/Book.cpp include/model/Author.h src/model/Author.cpp src/model/Rent.cpp include/model/Rent.h src/model/Client.cpp include/model/Client.h src/model/ClientType.cpp include/model/ClientType.h src/model/Student.cpp include/model/Student.h src/model/NonStudent.cpp include/model/NonStudent.h src/exceptions/ParametrException.cpp include/exceptions/ParametrException.h src/exceptions/TooManyException.cpp include/exceptions/TooManyException.h src/exceptions/UnavailableException.cpp include/exceptions/UnavailableException.h src/model/Repository.cpp include/model/Repository.h src/exceptions/LogicException.cpp include/exceptions/LogicException.h)
 #Utwórz bibliotekę typu STATIC, SHARED albo MODULE ze wskazanych źródeł
 add_library(Library ${SOURCE_FILES})
 
@@ -18,7 +18,7 @@ include_directories(
 )
 
 set(SOURCE_TEST_FILES
-        test/master.cpp test/AuthorTest.cpp test/BookTest.cpp test/ClientTypeTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
+        test/master.cpp test/AuthorTest.cpp test/BookTest.cpp test/ClientTypeTest.cpp test/ClientTest.cpp test/RentTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
 
 add_executable (LibraryTest ${SOURCE_TEST_FILES})
 

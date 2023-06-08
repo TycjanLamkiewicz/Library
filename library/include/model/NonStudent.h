@@ -10,7 +10,7 @@ private:
 public:
     NonStudent(int maxBooks, int maxRentalDays, float additionalFee);
 
-    ~NonStudent() override;
+    virtual ~NonStudent();
 
     /*********** getters ***********/
 

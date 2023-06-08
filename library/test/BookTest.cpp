@@ -18,6 +18,15 @@ BOOST_AUTO_TEST_SUITE(TestSuiteBook)
 
     }
 
+    BOOST_AUTO_TEST_CASE(BookConstructorExceptionsTest){
+
+        AuthorPtr author = std::make_shared<Author>(1, "Harper", "Lee");
+
+        BOOST_CHECK_THROW(Book book(1, "", author), std::logic_error);
+        BOOST_CHECK_THROW(Book book(1, "To Kill a Mockingbird", nullptr), std::logic_error);
+
+    }
+
     BOOST_AUTO_TEST_CASE(BookTitleSetterTest){
 
         AuthorPtr author = std::make_shared<Author>(1, "Harper", "Lee");
@@ -25,7 +34,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteBook)
 
         book.setTitle("TKaM");
         BOOST_CHECK(book.getTitle() == "TKaM");
-        book.setTitle("");
+        BOOST_CHECK_THROW(book.setTitle(""), std::logic_error);
         BOOST_CHECK(book.getTitle() == "TKaM");
 
     }

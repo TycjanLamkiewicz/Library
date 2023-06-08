@@ -15,13 +15,20 @@ BOOST_AUTO_TEST_SUITE(TestSuiteAuthor)
 
     }
 
+    BOOST_AUTO_TEST_CASE(AuthorConstructorExceptionsTest){
+
+        BOOST_CHECK_THROW(Author author(1, "", "Doe"), std::logic_error);
+        BOOST_CHECK_THROW(Author author(1, "Jane", ""), std::logic_error);
+
+    }
+
     BOOST_AUTO_TEST_CASE(AuthorNameSetterTest){
 
     Author author(1, "Jane", "Doe");
 
         author.setName("John");
         BOOST_CHECK(author.getName() == "John");
-        author.setName("");
+        BOOST_CHECK_THROW(author.setName(""), std::logic_error);
         BOOST_CHECK(author.getName() == "John");
 
     }
@@ -32,7 +39,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteAuthor)
 
         author.setSurname("Smith");
         BOOST_CHECK(author.getSurname() == "Smith");
-        author.setSurname("");
+        BOOST_CHECK_THROW(author.setSurname(""), std::logic_error);
         BOOST_CHECK(author.getSurname() == "Smith");
 
     }

@@ -1,10 +1,30 @@
 #include "model/Rent.h"
+#include "exceptions/ParametrException.h"
+#include "exceptions/TooManyException.h"
+#include "exceptions/UnavailableException.h"
 
 Rent::Rent(int rentId, const ClientPtr &client, const BookPtr &book) : rentID(rentId), client(client), book(book) {
-    client->addRent(shared_from_this());
-    book->setRented(true);
-    if (beginDate.is_not_a_date()){
-        beginDate = gr::day_clock::local_day();
+    if (client == nullptr){
+        throw ParametrException("Invalid client (can't be nullptr)");
+    }
+    else if (book == nullptr){
+        throw ParametrException("Invalid book (can't be nullptr)");
+    }
+    else if (client->getBookCount() >= client->getClientType()->getMaxBooks()){
+        throw TooManyException("Client can't have more rents than maxBooks");
+    }
+    else if (client->isArchive1() == true){
+        throw UnavailableException("Client is unavailable");
+    }
+    else if (book->isRented() == true || book->isArchive1() == true){
+        throw UnavailableException("Book is unavailable");
+    }
+    else {
+        client->setBookCount(client->getBookCount()+1);
+        book->setRented(true);
+        if (beginDate.is_not_a_date()){
+            beginDate = gr::day_clock::local_day();
+        }
     }
 }
 
@@ -37,16 +57,27 @@ const BookPtr &Rent::getBook() const {
 }
 
 void Rent::setEndDate(const gr::date &endDate) {
-    Rent::endDate = endDate;
+    if (endDate < beginDate){
+        throw ParametrException("Invalid endDate (can't be < beginDate)");
+    }
+    else {
+        Rent::endDate = endDate;
+    }
 }
 
 void Rent::setFee(float fee) {
-    Rent::fee = fee;
+    if (fee < 0){
+        throw ParametrException("Invalid fee (can't be < 0)");
+    }
+    else {
+        Rent::fee = fee;
+    }
 }
 
-std::string Rent::getRentInfo() {
+std::string Rent::getInfo() {
     return "ID: " + std::to_string(this->getRentId()) + ", data rozpoczęcia: " + boost::gregorian::to_simple_string(this->getBeginDate()) + "data zakończenia: " + boost::gregorian::to_simple_string(
-            this->getEndDate()) + ", opłata: " + std::to_string(this->getFee()) + ", klient: " + this->getClient()->getClientInfo() + ", książka: " + this->getBook()->getBookInfo();
+            this->getEndDate()) + ", opłata: " + std::to_string(this->getFee()) + ", klient: " +
+            this->getClient()->getInfo() + ", książka: " + this->getBook()->getInfo();
 }
 
 int Rent::getRentDays() {
@@ -75,7 +106,6 @@ void Rent::endRent() {
     }
 
     book->setRented(false);
-    client->removeRent(shared_from_this());
 
     float fee = this->getClient()->getClientType()->feeCost(this->getRentDays());
     this->setFee(fee);

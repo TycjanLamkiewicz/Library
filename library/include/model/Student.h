@@ -8,7 +8,7 @@ class Student : public ClientType {
 public:
     Student(int maxBooks, int maxRentalDays);
 
-    ~Student() override;
+    virtual ~Student();
 
     /************ other ************/
 

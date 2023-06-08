@@ -1,7 +1,12 @@
 #include "model/NonStudent.h"
+#include "exceptions/ParametrException.h"
 
 NonStudent::NonStudent(int maxBooks, int maxRentalDays, float additionalFee) : ClientType(maxBooks, maxRentalDays),
-                                                                               additionalFee(additionalFee) {}
+                                                                               additionalFee(additionalFee) {
+    if (additionalFee <= 0){
+        throw ParametrException("Invalid additionalFee (can't be <= 0)");
+    }
+}
 
 NonStudent::~NonStudent() {
 
@@ -12,7 +17,10 @@ float NonStudent::getAdditionalFee() const {
 }
 
 void NonStudent::setAdditionalFee(float additionalFee) {
-    if (additionalFee > 0){
+    if (additionalFee <= 0){
+        throw ParametrException("Invalid additionalFee (can't be <= 0)");
+    }
+    else {
         NonStudent::additionalFee = additionalFee;
     }
 }

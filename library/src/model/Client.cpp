@@ -1,8 +1,23 @@
 #include "model/Client.h"
+#include "exceptions/ParametrException.h"
 
-Client::Client(int clientId, const std::string &firstName, const std::string &lastName) : ClientID(clientId),
+Client::Client(int clientId, const std::string &firstName, const std::string &lastName, const ClientTypePtr &clientType) :
+                                                                                          ClientID(clientId),
                                                                                           firstName(firstName),
-                                                                                          lastName(lastName) {}
+                                                                                          lastName(lastName),
+                                                                                          clientType(clientType){
+    if (firstName.empty()){
+        throw ParametrException("Invalid firstName (can't be empty)");
+    }
+
+    if (lastName.empty()){
+        throw ParametrException("Invalid lastName (can't be empty)");
+    }
+
+    if (clientType == nullptr){
+        throw ParametrException("Invalid clientType (can't be nullptr)");
+    }
+}
 
 Client::~Client() {
 
@@ -28,18 +43,24 @@ const ClientTypePtr &Client::getClientType() const {
     return clientType;
 }
 
-const std::vector<RentPtr> &Client::getCurrentRents() const {
-    return currentRents;
+int Client::getBookCount() const {
+    return bookCount;
 }
 
 void Client::setFirstName(const std::string &firstName) {
-    if (firstName != ""){
+    if (firstName.empty()){
+        throw ParametrException("Invalid firstName (can't be empty)");
+    }
+    else {
         Client::firstName = firstName;
     }
 }
 
 void Client::setLastName(const std::string &lastName) {
-    if (lastName != ""){
+    if (lastName.empty()){
+        throw ParametrException("Invalid lastName (can't be empty)");
+    }
+    else {
         Client::lastName = lastName;
     }
 }
@@ -49,33 +70,18 @@ void Client::setIsArchive(bool isArchive) {
 }
 
 void Client::setClientType(const ClientTypePtr &clientType) {
-    Client::clientType = clientType;
+    if (clientType == nullptr){
+        throw ParametrException("Invalid clientType (can't be nullptr)");
+    }
+    else {
+        Client::clientType = clientType;
+    }
 }
 
-std::string Client::getClientInfo() {
+void Client::setBookCount(int bookCount) {
+    Client::bookCount = bookCount;
+}
+
+std::string Client::getInfo() {
     return "ID klienta: " + std::to_string(this->getClientId()) + ", imię: " + this->getFirstName() + ", nazwisko: " + this->getLastName();
-}
-
-std::string Client::getFullClienxtInfo() {
-    std::string info = "";
-
-    info += this->getClientInfo();
-    info += "\n";
-
-    for (int i = 0; i < currentRents.size(); i++){
-        info += currentRents[i]->getRentInfo();
-        info += "\n";
-    }
-
-    return info;
-}
-
-void Client::addRent(RentPtr rent) {
-    if (rent != nullptr){
-        currentRents.push_back(rent);
-    }
-}
-
-void Client::removeRent(RentPtr rent) {
-    currentRents.erase(std::remove(currentRents.begin(), currentRents.end(), rent), currentRents.end());
 }

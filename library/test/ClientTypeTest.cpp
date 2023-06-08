@@ -20,14 +20,21 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClientType)
 
     }
 
+    BOOST_AUTO_TEST_CASE(ClientTypeConstructorExceptionsTest){
+
+        BOOST_CHECK_THROW(NonStudent nonStudent(0, 30, 100), std::logic_error);
+        BOOST_CHECK_THROW(NonStudent nonStudent(5, 0, 100), std::logic_error);
+        BOOST_CHECK_THROW(NonStudent nonStudent(5, 30, 0), std::logic_error);
+
+    }
+
     BOOST_AUTO_TEST_CASE(ClientTypeMaxBooksSetterTest){
 
         NonStudent nonStudent(5, 30, 100);
 
         nonStudent.setMaxBooks(15);
         BOOST_CHECK(nonStudent.getMaxBooks() == 15);
-
-        nonStudent.setMaxBooks(0);
+        BOOST_CHECK_THROW(nonStudent.setMaxBooks(0), std::logic_error);
         BOOST_CHECK(nonStudent.getMaxBooks() == 15);
 
     }
@@ -38,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClientType)
 
         nonStudent.setMaxRentalDays(20);
         BOOST_CHECK(nonStudent.getMaxRentalDays() == 20);
-        nonStudent.setMaxRentalDays(0);
+        BOOST_CHECK_THROW(nonStudent.setMaxRentalDays(0), std::logic_error);
         BOOST_CHECK(nonStudent.getMaxRentalDays() == 20);
 
     }
@@ -49,7 +56,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClientType)
 
         nonStudent.setAdditionalFee(25);
         BOOST_CHECK(nonStudent.getAdditionalFee() == 25);
-        nonStudent.setAdditionalFee(0);
+        BOOST_CHECK_THROW(nonStudent.setAdditionalFee(0), std::logic_error);
         BOOST_CHECK(nonStudent.getAdditionalFee() == 25);
 
     }

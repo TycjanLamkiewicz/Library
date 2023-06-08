@@ -1,7 +1,16 @@
 #include "model/Author.h"
+#include "exceptions/ParametrException.h"
 
 Author::Author(int authorId, const std::string &name, const std::string &surname) : authorID(authorId), name(name),
-                                                                                    surname(surname) {}
+                                                                                    surname(surname) {
+    if (name.empty()){
+        throw ParametrException("Invalid name (can't be empty)");
+    }
+
+    if (surname.empty()){
+        throw ParametrException("Invalid surname (can't be empty)");
+    }
+}
 
 Author::~Author() {
 
@@ -20,13 +29,19 @@ const std::string &Author::getSurname() const {
 }
 
 void Author::setName(const std::string &name) {
-    if (name != ""){
+    if (name.empty()){
+        throw ParametrException("Invalid name (can't be empty)");
+    }
+    else {
         Author::name = name;
     }
 }
 
 void Author::setSurname(const std::string &surname) {
-    if (surname != ""){
+    if (surname.empty()){
+        throw ParametrException("Invalid surname (can't be empty)");
+    }
+    else {
         Author::surname = surname;
     }
 }
